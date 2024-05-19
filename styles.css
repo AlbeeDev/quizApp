@@ -1,0 +1,21 @@
+.bg-approved{
+    background-color: lime !important; 
+    border-bottom-color:lime !important;
+    border-left-color:lime !important;
+    border-right-color:lime !important;
+    border-top-color:lime !important;
+}
+
+
+.btn-lime {
+    background-color: rgb(3, 202, 3);
+    border-color: rgb(3, 202, 3);
+}
+
+.bg-lime {
+    background-color: rgb(3, 202, 3);
+}
+
+.text-lime {
+    color: rgb(3, 202, 3);
+}

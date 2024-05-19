@@ -1,0 +1,28 @@
+{
+    "phpserver.phpConfigPath": "C:\\xampp\\php",
+    "phpserver.phpPath": "C:\\xampp\\php\\php.exe",
+
+    // Font Awesome version to use.
+    "fontAwesomeAutocomplete.version": "5",
+    // List of glob patterns that determine where Font Awesome 5 Autocomplete will provide suggestions.
+    "fontAwesomeAutocomplete.patterns": [
+        "**/*.html",
+        "**/*.php"
+    ],
+    // A word that triggers the autocompletion of Font Awesome icons. Last character of the trigger word is also the trigger character for autocompletion menu.
+    "fontAwesomeAutocomplete.triggerWord": "fa-",
+    // A list of glob patterns for which the extension should NOT auto-remove the trigger word when a font class name is inserted from the autocompletion list.
+    "fontAwesomeAutocomplete.disableTriggerWordAutoClearPatterns": ["**/*.html"],
+    // Background color of a Font Awesome icon preview. Supports any valid CSS color.
+    "fontAwesomeAutocomplete.preview.backgroundColor": "#ffffff",
+    // Foreground color of a Font Awesome icon preview. Supports any valid CSS color.
+    "fontAwesomeAutocomplete.preview.foregroundColor": "#000000",
+    // Allows overriding the inserted text per file type when an autocompletion item is selected. 
+    // Available template placeholders are {style}, {styleName}, {name}, and {prefix}. 
+    // {name} supports the following formatters: camelCase, kebabCase, pascalCase, and snakeCase. Usage: {name:formatter}, e.g. {name:camelCase}
+    "fontAwesomeAutocomplete.insertionTemplate": {
+        "**/*.html": "{style} {prefix}{name}"
+    },
+    // Artificially increases the importance of completion items. Enabled by default as FontAwesome Autocomplete extension only provides suggestions based on the triggerWord setting.
+    "fontAwesomeAutocomplete.enableElevatedSortPriority": true
+}
