@@ -9,21 +9,20 @@
         $email = $_POST["email"];
         $password = $_POST["pwd"];
 
-        $sql = "SELECT username, password, is_admin FROM User WHERE email = ?";
+        $sql = "SELECT username, password FROM user WHERE email = ?";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $stmt->store_result();
 
             if ($stmt->num_rows > 0) {
-                $stmt->bind_result($username, $storedPassword, $isAdmin); 
+                $stmt->bind_result($username, $storedPassword); 
                 $stmt->fetch();
                 echo $password." ". $storedPassword;
                 if (password_verify($password, $storedPassword)) {
                     $_SESSION["logged_in"] = true;
                     $_SESSION["email"]=$email;
                     $_SESSION["username"]=$username;
-                    $_SESSION["is_admin"]=$isAdmin;
 
                     header("Location: home.php");
                     exit();
@@ -65,7 +64,7 @@
                         <label for="pwd">Password:</label>
                         <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" required>
                     </div>
-                    <button class="btn btn-lime text-light mt-4" id="" type="submit" name="login">Submit</button>
+                    <button class="btn btn-lime mt-4" id="" type="submit" name="login">Submit</button>
                     <?php 
                     if (isset($error)) {
                         ?>
@@ -82,7 +81,7 @@
         <div class="row justify-content-center">
             <div class="col col-3">
                 <h2 class="mt-5">Dont have an account yet?</h2>
-                <a href="register.php" class="btn btn-lime text-light">Register here</a>
+                <a href="register.php" class="btn btn-lime">Register here</a>
             </div>
         </div>
         

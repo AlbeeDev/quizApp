@@ -9,9 +9,8 @@
         $username = $_POST['username'];
         $email = $_POST["email"];
         $password = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
-        $isAdmin = 0;
 
-        $sql = "select 1 from User where username = ? or email = ?";
+        $sql = "select 1 from user where username = ? or email = ?";
         if($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("ss", $username, $email);
             $stmt->execute();
@@ -20,15 +19,14 @@
             if ($stmt->num_rows == 1) {
                 echo "This user is already registered.";
             } else {
-                $sql = "insert into User (username, email, password, is_admin) values (?, ?, ?, ?)";
+                $sql = "insert into user (username, email, password) values (?, ?, ?)";
                 if ($stmt = $conn->prepare($sql)) {
-                    $stmt->bind_param("sssi", $username, $email, $password, $isAdmin);
+                    $stmt->bind_param("sss", $username, $email, $password);
                     if ($stmt->execute()) {
-                        echo "success!";
-                        //echo '<script>document.location.href=\'home.php\'</script>';
                         $_SESSION["logged_in"] = true;
                         $_SESSION["email"]=$email;
                         $_SESSION["username"]=$username;
+
                         header("Location: login.php");
                         exit();
                     } else {
@@ -50,7 +48,11 @@
     <?php include 'dependencies.php' ?>
 </head>
 <body class="bg-dark text-light">
-    <div class="container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-1"><h1 class="text-lime">QuizApp</h1></div>
+            <div class="col col-6"></div>
+        </div>
         <div class="row justify-content-center">
             <div class="col col-md-4">
                 <h2 class="mt-5">Register</h2>
@@ -67,14 +69,14 @@
                         <label for="pwd">Password:</label>
                         <input type="password" class="form-control" id="pwd" placeholder="Create a password" name="pwd" required>
                     </div>
-                    <button type="submit" class="btn btn-warning mt-4" name="register">Register</button>
+                    <button type="submit" class="btn btn-lime mt-4" name="register">Register</button>
                 </form>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col col-md-4">
                 <h2 class="mt-5">Already have an account?</h2>
-                <a href="login.php" class="btn btn-warning text-decoration-none">Login here</a>
+                <a href="login.php" class="btn btn-lime text-decoration-none">Login here</a>
             </div>
         </div>
     </div>

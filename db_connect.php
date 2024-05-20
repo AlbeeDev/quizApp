@@ -2,7 +2,7 @@
     $sername="localhost";
     $utetnte="root";
     $password="";
-    $dbname = "videofeed";
+    $dbname = "quizapp";
 
      // Create connection
     $conn = new mysqli($sername, $utetnte, $password, $dbname);

@@ -19,3 +19,11 @@
 .text-lime {
     color: rgb(3, 202, 3);
 }
+
+.border-lime {
+    border-color: rgb(3, 202, 3) !important;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.5); /* Adjust the scale factor as needed */
+  }
