@@ -26,4 +26,9 @@
 
 input[type="checkbox"] {
     transform: scale(1.5); /* Adjust the scale factor as needed */
-  }
+}
+
+.btn-gray {
+    background-color: rgb(63, 63, 63);
+    border-color: rgb(63, 63, 63);
+}

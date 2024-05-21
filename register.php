@@ -17,7 +17,7 @@
             $stmt->store_result();
 
             if ($stmt->num_rows == 1) {
-                echo "This user is already registered.";
+                $error="This user exists already";
             } else {
                 $sql = "insert into user (username, email, password) values (?, ?, ?)";
                 if ($stmt = $conn->prepare($sql)) {
@@ -70,6 +70,15 @@
                         <input type="password" class="form-control" id="pwd" placeholder="Create a password" name="pwd" required>
                     </div>
                     <button type="submit" class="btn btn-lime mt-4" name="register">Register</button>
+                    <?php 
+                    if (isset($error)) {
+                        ?>
+                        <div class="alert alert-danger mt-3" role="alert">
+                            <?php echo $error;?>
+                        </div>
+                        <?php 
+                    }
+                    ?>
                 </form>
             </div>
         </div>

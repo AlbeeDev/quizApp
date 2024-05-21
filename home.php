@@ -6,6 +6,30 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
+    unset($_SESSION["quiz"]);
+    
+
+    if(isset($_POST["start"])){
+        $quizid = $_POST["id"];
+        
+        $sql="select question.id from question
+        join quiz q on q.id = question.fk_quiz
+        where q.id = ?
+        order by rand()";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("i",$quizid);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($id); 
+            while($stmt->fetch()){
+                $_SESSION["quiz"]["questions"][] = $id;
+            }
+        }
+        $_SESSION["quiz"]["id"] = $quizid;
+        $_SESSION["quiz"]["index"] = 0;
+        header("Location: quiz.php");
+        exit();
+    }
     
 ?>
 <!DOCTYPE html>
@@ -104,11 +128,12 @@
                         //$data[$linkid] = $username;
                         ?>
                         <div class="col col-2 p-4 bg-dark border border-lime ">
-                            <form action="quiz.php" method="post">
+                            <form action="" method="post">
+                                <input type="hidden" name="id" value="<?php echo $id ?>">
                                 <h2><?php echo $name ?></h2>
                                 <h5>Language: <?php echo $language ?></h5>
                                 <p>By <?php echo $username ?></p>
-                                <button class="btn btn-lime btn-lg">Start Quiz</button>
+                                <button class="btn btn-lime btn-lg" type="submit" name="start">Start Quiz</button>
                             </form>
                         </div>
                         <?php

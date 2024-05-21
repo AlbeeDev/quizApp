@@ -18,7 +18,6 @@
             if ($stmt->num_rows > 0) {
                 $stmt->bind_result($username, $storedPassword); 
                 $stmt->fetch();
-                echo $password." ". $storedPassword;
                 if (password_verify($password, $storedPassword)) {
                     $_SESSION["logged_in"] = true;
                     $_SESSION["email"]=$email;
@@ -28,7 +27,7 @@
                     exit();
 
                 } else {
-                    echo "Invalid password!";
+                    $error="Invalid email or password";
                 }
             } else {
                 echo "No user found with that email address.";
