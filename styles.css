@@ -6,6 +6,19 @@
     border-top-color:lime !important;
 }
 
+.btn-purple {
+    background-color: rgb(102, 3, 202);
+    border-color: rgb(102, 3, 202);
+}
+
+.bg-purple {
+    background-color: rgb(102, 3, 202);
+}
+
+.text-purple {
+    color: rgb(102, 3, 202);
+}
+
 
 .btn-lime {
     background-color: rgb(3, 202, 3);
@@ -21,7 +34,7 @@
 }
 
 .border-lime {
-    border-color: rgb(3, 202, 3) !important;
+    border-color: rgb(3, 202, 3) ;
 }
 
 input[type="checkbox"] {
