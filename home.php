@@ -12,14 +12,22 @@
     if(isset($_POST["start"])){
         $quizid = $_POST["id"];
 
-        $sql="select COUNT(question.id) from question";
+        $sql="select COUNT(question.id) from question
+        join quiz q on q.id = question.fk_quiz
+        where q.id = ?";
         if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("i",$quizid);
             $stmt->execute();
             $stmt->store_result();
             $stmt->bind_result($max_index); 
             $stmt->fetch();
+            if($max_index==0){
+                return;
+            }
             $_SESSION["quiz"]["max_index"] = $max_index;
         }
+
+        
         
         $sql="select question.id from question
         join quiz q on q.id = question.fk_quiz
@@ -40,8 +48,23 @@
         exit();
     }
 
+    if(isset($_POST["add"])){
+        $quizid = $_POST["id"];
+        $_SESSION["quiz"]["id"] = $quizid;
+
+        header("Location: addquestion.php");
+        exit();
+    }
+
     if(isset($_POST["create"])){
-        echo "shits crazy";
+        $quizname=$_POST["name"];
+        $quizlanguage=$_POST["language"];
+        $userid=$_SESSION["userid"];
+        $sql="insert into quiz(name, language, fk_user)
+        values (?, ?, ?)";
+        $stmt=$conn->prepare($sql);
+        $stmt->bind_param("ssi",$quizname,$quizlanguage,$userid);
+        $stmt->execute();
     }
     
 ?>
@@ -95,21 +118,11 @@
                             <div class="modal-body bg-dark">
                                 <form action="" method="post">
                                     <label for="name" class="form-label ">insert quiz name</label>
-                                    <input type="text" class="form-control " name="name" id="name">
+                                    <input type="text" class="form-control " name="name" id="name" required>
                                     <label for="language" class="form-label mt-2">insert language of the questions</label>
-                                    <input type="text" class="form-control " name="language" id="language">
-                                    <button class="btn btn-purple text-light" type="submit" name="create">Save</button>
+                                    <input type="text" class="form-control " name="language" id="language" required>
+                                    <button class="btn btn-purple text-light mt-4 w-100 border " type="submit" name="create">Save</button>
                                 </form>
-                            </div>
-                            <div class="modal-footer bg-dark">
-                                <button
-                                    type="button"
-                                    class="btn btn-light"
-                                    data-bs-dismiss="modal"
-                                >
-                                    Close
-                                </button>
-                                <button type="button" class="btn btn-purple text-light" type="submit" name="create">Save</button>
                             </div>
                         </div>
                     </div>
@@ -118,6 +131,7 @@
         </div>
         <div class="row mt-4">
             <?php 
+
             $sql="select quiz.id, name, language, username from quiz
             join user u on u.id = quiz.fk_user";
             if ($stmt = $conn->prepare($sql)) {
@@ -127,14 +141,25 @@
                 if ($rows > 0) {
                     $stmt->bind_result($id,$name,$language,$username); 
                     while($stmt->fetch()){
+                        $sql="select COUNT(question.id) from question
+                        join quiz q on q.id = question.fk_quiz
+                        where q.id = ?";
+                        if ($stmt2 = $conn->prepare($sql)) {
+                            $stmt2->bind_param("i",$id);
+                            $stmt2->execute();
+                            $stmt2->store_result();
+                            $stmt2->bind_result($max_index); 
+                            $stmt2->fetch();
+                        }
                         ?>
-                        <div class="col col-2 p-4 bg-dark border border-lime ">
+                        <div class="col col-2 me-5  p-4 bg-dark border border-lime ">
                             <form action="" method="post">
                                 <input type="hidden" name="id" value="<?php echo $id ?>">
                                 <h2><?php echo $name ?></h2>
                                 <h5>Language: <?php echo $language ?></h5>
                                 <p>By <?php echo $username ?></p>
-                                <button class="btn btn-purple text-light btn-lg" type="submit" name="start">Start Quiz</button>
+                                <button class="btn btn-purple text-light btn-lg w-100 <?php if($max_index==0) echo "disabled" ?>" type="submit" name="start">Start Quiz</button>
+                                <button class="btn btn-purple text-light mt-3 w-100" type="submit" name="add">Add question</button>
                             </form>
                         </div>
                         <?php

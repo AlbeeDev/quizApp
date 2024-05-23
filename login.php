@@ -9,19 +9,20 @@
         $email = $_POST["email"];
         $password = $_POST["pwd"];
 
-        $sql = "SELECT username, password FROM user WHERE email = ?";
+        $sql = "SELECT id, username, password FROM user WHERE email = ?";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $stmt->store_result();
 
             if ($stmt->num_rows > 0) {
-                $stmt->bind_result($username, $storedPassword); 
+                $stmt->bind_result($userid,$username, $storedPassword); 
                 $stmt->fetch();
                 if (password_verify($password, $storedPassword)) {
                     $_SESSION["logged_in"] = true;
                     $_SESSION["email"]=$email;
                     $_SESSION["username"]=$username;
+                    $_SESSION["userid"]=$userid;
 
                     header("Location: home.php");
                     exit();
@@ -30,7 +31,7 @@
                     $error="Invalid email or password";
                 }
             } else {
-                echo "No user found with that email address.";
+                $error="Invalid email or password";
             }
         }
     }
@@ -45,10 +46,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-dark text-light">
+<body class="bg-purple text-light">
     <div class="container-fluid">
         <div class="row">
-            <div class="col col-1"><h1 class="text-lime">QuizApp</h1></div>
+            <div class="col col-1"><h1 class="text-light">QuizApp</h1></div>
             <div class="col col-6"></div>
         </div>
         <div class="row justify-content-center">
@@ -63,7 +64,7 @@
                         <label for="pwd">Password:</label>
                         <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" required>
                     </div>
-                    <button class="btn btn-lime mt-4" id="" type="submit" name="login">Submit</button>
+                    <button class="btn btn-outline-light mt-4" id="" type="submit" name="login">Submit</button>
                     <?php 
                     if (isset($error)) {
                         ?>
@@ -80,7 +81,7 @@
         <div class="row justify-content-center">
             <div class="col col-3">
                 <h2 class="mt-5">Dont have an account yet?</h2>
-                <a href="register.php" class="btn btn-lime">Register here</a>
+                <a href="register.php" class="btn btn-outline-light">Register here</a>
             </div>
         </div>
         

@@ -45,3 +45,7 @@ input[type="checkbox"] {
     background-color: rgb(63, 63, 63);
     border-color: rgb(63, 63, 63);
 }
+
+input[type="file"] {
+    display: none;
+}

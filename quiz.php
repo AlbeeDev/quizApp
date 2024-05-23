@@ -78,6 +78,25 @@
                     ?>
                     <h2>- <?php echo $qtext ?></h2>
                     <?php
+                        $sql="select image from question
+                        where id = ?";
+                        $stmt->prepare($sql);
+                        $stmt->bind_param("i",$qid);
+                        $stmt->execute();
+                        $stmt->bind_result($imageData);
+                        $stmt->fetch();
+
+                        if($imageData!=null){
+                            $base64ImageData = base64_encode($imageData);
+                            ?>
+                            <img src="data:image;base64,<?php echo $base64ImageData ?>" class="img-fluid rounded-top" style="max-width: 250px;"><br>
+                            <?php
+                        }
+                    ?>
+                    
+                    
+                    
+                    <?php
                     $alphabet=range('A', 'Z');
                     $sql="select id, text from answer
                     where fk_question = ?";
@@ -118,6 +137,22 @@
                         }
                     ?>
                     <h2>- <?php echo $qtext ?></h2>
+                    <?php
+                        $sql="select image from question
+                        where id = ?";
+                        $stmt->prepare($sql);
+                        $stmt->bind_param("i",$qid);
+                        $stmt->execute();
+                        $stmt->bind_result($imageData);
+                        $stmt->fetch();
+
+                        if($imageData!=null){
+                            $base64ImageData = base64_encode($imageData);
+                            ?>
+                            <img src="data:image;base64,<?php echo $base64ImageData ?>" class="img-fluid rounded-top" style="max-width: 250px;"><br>
+                            <?php
+                        }
+                    ?>
                     <?php
                     $alphabet=range('A', 'Z');
                     $sql="select id, text, is_correct from answer

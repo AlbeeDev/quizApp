@@ -47,10 +47,10 @@
     <title>Register</title>
     <?php include 'dependencies.php' ?>
 </head>
-<body class="bg-dark text-light">
+<body class="bg-purple text-light">
     <div class="container-fluid">
         <div class="row">
-            <div class="col col-1"><h1 class="text-lime">QuizApp</h1></div>
+            <div class="col col-1"><h1 class="text-light">QuizApp</h1></div>
             <div class="col col-6"></div>
         </div>
         <div class="row justify-content-center">
@@ -69,7 +69,7 @@
                         <label for="pwd">Password:</label>
                         <input type="password" class="form-control" id="pwd" placeholder="Create a password" name="pwd" required>
                     </div>
-                    <button type="submit" class="btn btn-lime mt-4" name="register">Register</button>
+                    <button type="submit" class="btn btn-outline-light mt-4" name="register">Register</button>
                     <?php 
                     if (isset($error)) {
                         ?>
@@ -85,7 +85,7 @@
         <div class="row justify-content-center">
             <div class="col col-md-4">
                 <h2 class="mt-5">Already have an account?</h2>
-                <a href="login.php" class="btn btn-lime text-decoration-none">Login here</a>
+                <a href="login.php" class="btn btn-outline-light text-decoration-none">Login here</a>
             </div>
         </div>
     </div>
