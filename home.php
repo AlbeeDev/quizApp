@@ -131,7 +131,7 @@
         </div>
         <div class="row mt-4">
             <?php 
-
+            
             $sql="select quiz.id, name, language, username from quiz
             join user u on u.id = quiz.fk_user";
             if ($stmt = $conn->prepare($sql)) {

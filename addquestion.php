@@ -3,7 +3,7 @@ session_start();
 include "db_connect.php";
 
 $quizid=$_SESSION["quiz"]["id"];
-
+echo "<h1>H<sub>2</sub>O</h1>";
 if(isset($_POST["add"])){
     $question = $_POST['question'];
 
