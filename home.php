@@ -141,6 +141,28 @@
                 if ($rows > 0) {
                     $stmt->bind_result($id,$name,$language,$username); 
                     while($stmt->fetch()){
+                        $sql="select mq.fk_child from mergequiz mq
+                        join quiz q on q.id = ?";
+                        if ($stmt2 = $conn->prepare($sql)) {
+                            $stmt2->bind_param("i",$id);
+                            $stmt2->execute();
+                            $stmt2->store_result();
+                            if($stmt2->num_rows>0){
+                                $ismerged=true;
+                                $childarray = array();
+                                $stmt2->bind_result($idchild); 
+                                while($stmt2->fetch()){
+                                    $childarray[]=$idchild;
+                                }
+                            }
+                            
+                        }
+                        
+                        if($ismerged){
+                            $sql="select count(q.id) from question q
+                            join quiz q2 on q2.id = q.fk_quiz
+                            join mergequiz m on q2.id = m.fk_child"
+                        }
                         $sql="select COUNT(question.id) from question
                         join quiz q on q.id = question.fk_quiz
                         where q.id = ?";
@@ -155,6 +177,7 @@
                         <div class="col col-2 me-5  p-4 bg-dark border border-lime ">
                             <form action="" method="post">
                                 <input type="hidden" name="id" value="<?php echo $id ?>">
+                                <input type="hidden" name="id" value="<?php echo $id ?>">
                                 <h2><?php echo $name ?></h2>
                                 <h5>Language: <?php echo $language ?></h5>
                                 <p>By <?php echo $username ?></p>
@@ -166,12 +189,8 @@
                     }
                 }
             }
-
-            for ($i=0; $i < 2; $i++) { 
-                
-            }
             ?>
-            <div class="col"></div>
+            
         </div>
     </div>
 </body>
