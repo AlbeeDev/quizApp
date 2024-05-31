@@ -57,14 +57,14 @@ if(isset($_POST["add"])){
     <?php include 'nav.php' ?>
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col col-6">
+            <div class="row mt-4">
+                <div class="col col-12 col-md-6">
                     <label for="question">
                         <h4>Insert question:</h4>
                     </label><br>
                     <input type="text" class="form-control " name="question" id="question" required autocomplete="off"> <br>
                 </div>
-                <div class="col col-6">
+                <div class="col col-12 col-md-6">
                     <h4>Insert image (optional)</h4>
                     <label class="btn btn-purple text-light mt-1" for="image">Select</label>
                     <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png">
