@@ -32,3 +32,11 @@ create table answer(
     fk_question int,
     foreign key (fk_question) references question(id)
 );
+
+create table mergequiz(
+    id int primary key auto_increment,
+    fk_parent int,
+    fk_child int,
+    foreign key (fk_parent) references quiz(id),
+    foreign key (fk_child) references quiz(id)
+);

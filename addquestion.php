@@ -3,7 +3,6 @@ session_start();
 include "db_connect.php";
 
 $quizid=$_SESSION["quiz"]["id"];
-echo "<h1>H<sub>2</sub>O</h1>";
 if(isset($_POST["add"])){
     $question = $_POST['question'];
 
@@ -63,7 +62,7 @@ if(isset($_POST["add"])){
                     <label for="question">
                         <h4>Insert question:</h4>
                     </label><br>
-                    <input type="text" class="form-control " name="question" id="question" required> <br>
+                    <input type="text" class="form-control " name="question" id="question" required autocomplete="off"> <br>
                 </div>
                 <div class="col col-6">
                     <h4>Insert image (optional)</h4>
@@ -77,13 +76,20 @@ if(isset($_POST["add"])){
                 <div class="col">
                     <div id="answers-container">
                         <div class="input-group answer-field mt-4">
-                            <input type="text" class="form-control" name="answers[]" placeholder="Enter answer" required>
+                            <div class="input-group-append">
+                                <select class="form-control btn-primary " name="format">
+                                    <option value="false">Text</option>
+                                    <option value="true">Formula</option>
+                                </select>
+                            </div>
+                            <input type="text" class="form-control" name="answers[]" placeholder="Enter answer" required autocomplete="off">
                             <div class="input-group-append">
                                 <select class="form-control btn-primary " name="correct[]">
                                     <option value="false">False</option>
                                     <option value="true">True</option>
                                 </select>
                             </div>
+                            
                         </div>
                     </div>
                     <div class="input-group mt-5">
