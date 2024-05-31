@@ -141,28 +141,6 @@
                 if ($rows > 0) {
                     $stmt->bind_result($id,$name,$language,$username); 
                     while($stmt->fetch()){
-                        $sql="select mq.fk_child from mergequiz mq
-                        join quiz q on q.id = ?";
-                        if ($stmt2 = $conn->prepare($sql)) {
-                            $stmt2->bind_param("i",$id);
-                            $stmt2->execute();
-                            $stmt2->store_result();
-                            if($stmt2->num_rows>0){
-                                $ismerged=true;
-                                $childarray = array();
-                                $stmt2->bind_result($idchild); 
-                                while($stmt2->fetch()){
-                                    $childarray[]=$idchild;
-                                }
-                            }
-                            
-                        }
-                        
-                        if($ismerged){
-                            $sql="select count(q.id) from question q
-                            join quiz q2 on q2.id = q.fk_quiz
-                            join mergequiz m on q2.id = m.fk_child"
-                        }
                         $sql="select COUNT(question.id) from question
                         join quiz q on q.id = question.fk_quiz
                         where q.id = ?";
@@ -176,20 +154,29 @@
                         ?>
                         <div class="col col-12 col-xxl-3 col-xl-4 col-lg-5 col-md-8 col-sm-12 mt-3 card justify-content-center me-5 p-2 " style="background-color: #0c1821; border-radius: 8%;">
                             <form action="" method="post">
-                                <input type="hidden" name="id" value="<?php echo $id ?>">
-                                <h2><?php echo $name ?></h2>
-                                <h5>Language: <?php echo $language ?></h5>
-                                <p>By <?php echo $username ?></p>
-                                <button class="btn btn-purple text-light btn-lg w-100 <?php if($max_index==0) echo "disabled" ?>" type="submit" name="start">Start Quiz</button>
-                                <button class="btn btn-purple text-light mt-3 w-100" type="submit" name="add">Add question</button>
+                                <div class="card-body">
+                                    <input type="hidden" name="id" value="<?php echo $id ?>">
+                                    <h4><?php echo $name ?></h4>
+                                    <h5>Language: <?php echo $language ?></h5>
+                                </div>
+                                <div class="card-footer">
+                                    <p>By <?php echo $username ?></p>
+                                    <button class="btn btn-purple text-light btn-lg w-100 <?php if($max_index==0) echo "disabled" ?>" type="submit" name="start">Start Quiz</button>
+                                    <button class="btn btn-purple text-light mt-2 w-100" type="submit" name="add">Add question</button>
+                                </div>
+                                
                             </form>
                         </div>
                         <?php
                     }
                 }
             }
+
+            for ($i=0; $i < 2; $i++) { 
+                
+            }
             ?>
-            
+            <div class="col"></div>
         </div>
     </div>
 </body>
