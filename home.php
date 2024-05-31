@@ -129,7 +129,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-4 p-2">
             <?php 
             
             $sql="select quiz.id, name, language, username from quiz
@@ -152,14 +152,19 @@
                             $stmt2->fetch();
                         }
                         ?>
-                        <div class="col col-2 me-5  p-4 bg-dark border border-lime ">
+                        <div class="col col-12 col-xxl-3 col-xl-4 col-lg-5 col-md-8 col-sm-12 mt-3 card justify-content-center me-5 p-2 " style="background-color: #0c1821; border-radius: 8%;">
                             <form action="" method="post">
-                                <input type="hidden" name="id" value="<?php echo $id ?>">
-                                <h2><?php echo $name ?></h2>
-                                <h5>Language: <?php echo $language ?></h5>
-                                <p>By <?php echo $username ?></p>
-                                <button class="btn btn-purple text-light btn-lg w-100 <?php if($max_index==0) echo "disabled" ?>" type="submit" name="start">Start Quiz</button>
-                                <button class="btn btn-purple text-light mt-3 w-100" type="submit" name="add">Add question</button>
+                                <div class="card-body">
+                                    <input type="hidden" name="id" value="<?php echo $id ?>">
+                                    <h4><?php echo $name ?></h4>
+                                    <h5>Language: <?php echo $language ?></h5>
+                                </div>
+                                <div class="card-footer">
+                                    <p>By <?php echo $username ?></p>
+                                    <button class="btn btn-purple text-light btn-lg w-100 <?php if($max_index==0) echo "disabled" ?>" type="submit" name="start">Start Quiz</button>
+                                    <button class="btn btn-purple text-light mt-2 w-100" type="submit" name="add">Add question</button>
+                                </div>
+                                
                             </form>
                         </div>
                         <?php

@@ -54,7 +54,7 @@
             <div class="col col-6"></div>
         </div>
         <div class="row justify-content-center">
-            <div class="col col-md-4">
+            <div class="col col-9 col-xl-3 col-lg-5 col-sm-5">
                 <h2 class="mt-5">Register</h2>
                 <form action="" method="POST">
                     <div class="form-group">
@@ -83,7 +83,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col col-md-4">
+            <div class="col col-9 col-xl-3 col-lg-5 col-sm-5">
                 <h2 class="mt-5">Already have an account?</h2>
                 <a href="login.php" class="btn btn-outline-light text-decoration-none">Login here</a>
             </div>

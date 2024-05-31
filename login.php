@@ -53,7 +53,7 @@
             <div class="col col-6"></div>
         </div>
         <div class="row justify-content-center">
-            <div class="col col-3">
+            <div class="col col-9 col-xl-3 col-lg-5 col-sm-5">
                 <h2 class="mt-5">Login</h2>
                 <form action="" method="POST">
                     <div class="form-group">
@@ -79,7 +79,7 @@
             
         </div>
         <div class="row justify-content-center">
-            <div class="col col-3">
+            <div class="col col-9 col-xl-3 col-lg-5 col-sm-5">
                 <h2 class="mt-5">Dont have an account yet?</h2>
                 <a href="register.php" class="btn btn-outline-light">Register here</a>
             </div>

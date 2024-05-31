@@ -27,13 +27,13 @@
         $stmt->fetch();
     }
 
-    echo "DEBUG: questions ";
+    //echo "DEBUG: questions ";
 
     foreach ($_SESSION["quiz"]["questions"] as $questionId) {
-        echo $questionId;
+        //echo $questionId;
     }
     $cur_question = $_SESSION["quiz"]["questions"][$_SESSION["quiz"]["index"]];
-    echo " current question: ".$cur_question;
+    //echo " current question: ".$cur_question;
 
     
 
@@ -56,7 +56,10 @@
         </div>
         <div class="row mt-5">
             <div class="col">
-                <div>Question <?php echo ($_SESSION["quiz"]["index"]+1)." of ".count($_SESSION["quiz"]["questions"]) ?></div>
+                <div id="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+                <div class="mt-3">Question <?php echo ($_SESSION["quiz"]["index"]+1)." of ".count($_SESSION["quiz"]["questions"]) ?></div>
                 <?php if(!isset($_POST["confirm"])){ ?>
                 <form action="" method="post">
                     <?php 
@@ -83,7 +86,7 @@
                         if($imageData!=null){
                             $base64ImageData = base64_encode($imageData);
                             ?>
-                            <img src="data:image;base64,<?php echo $base64ImageData ?>" class="img-fluid rounded-top" style="max-width: 250px;"><br>
+                            <img class="d-flex justify-content-center" src="data:image;base64,<?php echo $base64ImageData ?>" class="img-fluid rounded-top" style="max-width: 250px;"><br>
                             <?php
                         }
                     ?>
@@ -204,5 +207,22 @@
         </div>
         
     </div>
+    <script>
+    // JavaScript to handle the progress bar
+    function updateProgressBar(currentIndex, totalQuestions) {
+        if(currentIndex==0) return;
+      const progressBar = document.getElementById('progress-bar');
+      const progress = (currentIndex / totalQuestions) * 100;
+      progressBar.style.width = progress + '%';
+      progressBar.textContent = Math.round(progress) + '%';
+    }
+
+    // Assume these values come from your session data
+    const currentIndex = <?php echo $_SESSION["quiz"]["index"]; ?>;
+    const totalQuestions = <?php echo count($_SESSION["quiz"]["questions"]); ?>;
+
+    // Initial update of the progress bar
+    updateProgressBar(currentIndex, totalQuestions);
+  </script>
 </body>
 </html>

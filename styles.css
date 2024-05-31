@@ -1,3 +1,21 @@
+#progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    overflow: hidden;
+    height: 30px;
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #02d5d8;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    white-space: nowrap; 
+    transition: width 0.5s;
+  }
+
 .bg-approved{
     background-color: lime !important; 
     border-bottom-color:lime !important;

@@ -1,11 +1,12 @@
 <?php
-    $sername="localhost";
-    $utetnte="root";
+
+    $host="localhost";
+    $utente="root";
     $password="";
     $dbname = "quizapp";
 
      // Create connection
-    $conn = new mysqli($sername, $utetnte, $password, $dbname);
+    $conn = new mysqli($host, $utente, $password, $dbname);
     if ($conn->connect_error) {
          die("Connection failed: " . $conn->connect_error);
     }
