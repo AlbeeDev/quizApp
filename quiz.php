@@ -95,22 +95,49 @@
                     
                     <?php
                     $alphabet=range('A', 'Z');
-                    $sql="select id, text from answer
+                    $sql="select id, text, image from answer
                     where fk_question = ?
                     order by RAND()";
                     if($stmt->prepare($sql)){
                         $stmt->bind_param("i",$cur_question);
                         $stmt->execute();
                         $stmt->store_result();
-                        $stmt->bind_result($aid,$atext);
+                        $stmt->bind_result($aid,$atext,$aimage);
                         $index = 0;
                         while($stmt->fetch()){
                             $_SESSION['quiz']['answer_ids'][$index] = $aid;
-                            $_SESSION['quiz']['answers'][$index] = $atext;
+                            if(!$aimage){
+                                $_SESSION['quiz']['answers'][$index] = [
+                                    'type' => 'text',
+                                    'data' => $atext
+                                ];
+                            }
+                            else{
+                                $_SESSION['quiz']['answers'][$index] = [
+                                    'type' => 'image',
+                                    'data' => $aimage
+                                ];
+                            }
+                            
                             ?>
                             <div class="btn btn-gray text-light mt-4 p-2">
                                 <input type="checkbox" class="me-2" name="answers[]" id="<?php echo $_SESSION['quiz']['answer_ids'][$index] ?>" value="<?php echo $_SESSION['quiz']['answer_ids'][$index] ?>" >
-                                <label for="<?php echo $_SESSION['quiz']['answer_ids'][$index] ?>"><h5><?php echo $alphabet[$index] ?>. <?php echo $_SESSION['quiz']['answers'][$index] ?></h5></label>
+                                <label for="<?php echo $_SESSION['quiz']['answer_ids'][$index] ?>">
+                                <?php
+                                if($_SESSION['quiz']['answers'][$index]['type']==='image'){
+                                  
+                                ?>
+                                <h5><?php echo $alphabet[$index] ?>.</h5><br>
+                                <img class="d-flex justify-content-center" src="data:image;base64,<?php echo base64_encode($_SESSION['quiz']['answers'][$index]['data']); ?>" class="img-fluid rounded-top" style="max-width: 350px;min-width: 250px; width: auto;height: auto;">
+                                <?php
+                                }
+                                else{
+                                ?>
+                                <h5><?php echo $alphabet[$index] ?>. <?php echo $_SESSION['quiz']['answers'][$index]['data'] ?></h5>
+                                <?php
+                                }
+                                ?>
+                                </label>
                             </div> <br>
                             <?php
                             $index++;
@@ -124,7 +151,6 @@
                 else { ?>
                 <form action="" method="post">
                     <?php 
-                        //$num_q = $_SESSION["num_q"];
                         $sql="select id, text from question
                         where id = ?";
                         if($stmt->prepare($sql)){

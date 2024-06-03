@@ -73,7 +73,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <?php include 'dependencies.php' ?>
 </head>
 <body class="bg-dark text-light">
@@ -171,12 +170,7 @@
                     }
                 }
             }
-
-            for ($i=0; $i < 2; $i++) { 
-                
-            }
             ?>
-            <div class="col"></div>
         </div>
     </div>
 </body>

@@ -28,6 +28,7 @@ create table question(
 create table answer(
     id int primary key auto_increment,
     text text,
+    image longblob,
     is_correct int,
     fk_question int,
     foreign key (fk_question) references question(id)

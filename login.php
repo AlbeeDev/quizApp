@@ -42,13 +42,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <?php include 'dependencies.php' ?>
 </head>
 <body class="bg-purple text-light">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row mt-2">
+            <img src="logo.png" sizes="100x100" class="img-fluid" style="max-width: 80px; max-height: 80;">
             <div class="col col-1"><h1 class="text-light">QuizApp</h1></div>
             <div class="col col-6"></div>
         </div>
