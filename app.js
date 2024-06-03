@@ -45,6 +45,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    document.querySelector('#correct0').addEventListener('change', function(e) {
+        const selectedValue = e.target.value;
+        if (selectedValue === 'false') {
+            e.target.classList.remove('btn-success');
+            e.target.classList.add('btn-danger');
+        } else {
+            e.target.classList.remove('btn-danger');
+            e.target.classList.add('btn-success');
+        }
+    });
+
 
     let answerCount = 1;
     document.getElementById('add-answer').addEventListener('click', function() {

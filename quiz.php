@@ -2,7 +2,9 @@
     session_start();
     include "db_connect.php";
 
-    if(isset($_POST["skip"])){
+    if(isset($_POST["continue"])){
+        unset($_SESSION['quiz']['answer_ids']);
+        unset($_SESSION['quiz']['answer']);
         if($_SESSION["quiz"]["index"]+1<count($_SESSION["quiz"]["questions"])){
             $_SESSION["quiz"]["index"]++;
         }
@@ -10,6 +12,13 @@
             header("Location: home.php");
             exit();
         }
+    }
+
+    if(isset($_POST["skip"])){
+        unset($_SESSION['quiz']['answer_ids']);
+        unset($_SESSION['quiz']['answer']);
+        $_SESSION["quiz"]["questions"][]=$_POST["qid"];
+        $_SESSION["quiz"]["index"]++;
     }
     if(isset($_POST["confirm"])){
         $selected_answers = isset($_POST['answers']) ? $_POST['answers'] : [];
@@ -73,6 +82,7 @@
                             $stmt->fetch();
                         }
                     ?>
+                    <input type="hidden" name="qid" value="<?php echo $qid ?>">
                     <h2>- <?php echo $qtext ?></h2>
                     <?php
                         $sql="select image from question
@@ -90,9 +100,7 @@
                             <?php
                         }
                     ?>
-                    
-                    
-                    
+
                     <?php
                     $alphabet=range('A', 'Z');
                     $sql="select id, text, image from answer
@@ -216,7 +224,20 @@
                                 echo "gray"; 
                             } 
                             ?> text-light mt-4 p-2" >
-                                <h5><?php echo $alphabet[$index] ?>. <?php echo $_SESSION["quiz"]["answers"][$index] ?></h5>
+                                <?php
+                                if($_SESSION['quiz']['answers'][$index]['type']==='image'){
+                                  
+                                ?>
+                                <h5><?php echo $alphabet[$index] ?>.</h5><br>
+                                <img class="d-flex justify-content-center" src="data:image;base64,<?php echo base64_encode($_SESSION['quiz']['answers'][$index]['data']); ?>" class="img-fluid rounded-top" style="max-width: 350px;min-width: 250px; width: auto;height: auto;">
+                                <?php
+                                }
+                                else{
+                                ?>
+                                <h5><?php echo $alphabet[$index] ?>. <?php echo $_SESSION['quiz']['answers'][$index]['data'] ?></h5>
+                                <?php
+                                }
+                                ?>
                             </div> <br>
                             <?php
 
@@ -226,7 +247,7 @@
                     
 
                     ?>
-                    <button class="btn btn-purple text-light mt-5" type="submit" name="skip">Next</button>
+                    <button class="btn btn-purple text-light mt-5" type="submit" name="continue">Next</button>
                 </form>
                 <?php } ?>
             </div>

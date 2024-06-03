@@ -161,7 +161,9 @@
                                 <div class="card-footer">
                                     <p>By <?php echo $username ?></p>
                                     <button class="btn btn-purple text-light btn-lg w-100 <?php if($max_index==0) echo "disabled" ?>" type="submit" name="start">Start Quiz</button>
-                                    <button class="btn btn-purple text-light mt-2 w-100" type="submit" name="add">Add question</button>
+                                    <button class="btn btn-purple text-light mt-2 w-49" type="submit" name="manage" disabled>View questions</button>
+                                    <button class="btn btn-purple text-light mt-2 w-50" type="submit" name="add">Add question</button>
+                                    
                                 </div>
                                 
                             </form>
