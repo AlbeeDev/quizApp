@@ -75,12 +75,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'dependencies.php' ?>
 </head>
-<body class="bg-dark text-light">
-<?php include 'nav.php' ?>
-    <div class="container">
+<body class="text-light bg-fade-pb">
+    <?php include 'nav.php' ?>
+    <div class="container  ">
         <div class="row">
             <div class="col mt-4">
-                <!-- Modal trigger button -->
                 <button
                     type="button"
                     class="btn btn-purple text-light btn-lg"
@@ -151,7 +150,7 @@
                             $stmt2->fetch();
                         }
                         ?>
-                        <div class="col col-12 col-xxl-3 col-xl-4 col-lg-5 col-md-8 col-sm-12 mt-3 card justify-content-center me-5 p-2 " style="background-color: #0c1821; border-radius: 8%;">
+                        <div class="col col-12 col-xxl-3 col-xl-4 col-lg-5 col-md-8 col-sm-12 mt-3 card justify-content-center me-5 p-2 bg-dark" style="border-radius: 8%;">
                             <form action="" method="post">
                                 <div class="card-body">
                                     <input type="hidden" name="id" value="<?php echo $id ?>">

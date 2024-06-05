@@ -1,3 +1,13 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.full-height {
+    height: 100%;
+}
+
 #progress-bar-container {
     width: 100%;
     background-color: #e0e0e0;
@@ -31,6 +41,18 @@
 
 .bg-purple {
     background-color: rgb(102, 3, 202);
+}
+
+.bg-fade-pw {
+    background: linear-gradient(to bottom, rgb(102, 3, 202) 50%, white);
+}
+
+.bg-fade-pb {
+    background: linear-gradient(to bottom, rgb(102, 3, 202) 5%, black 15%);
+}
+
+.bg-carbon {
+    background-color: rgb(48, 48, 48);
 }
 
 .text-purple {

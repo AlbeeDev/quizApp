@@ -46,9 +46,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'dependencies.php' ?>
 </head>
-<body class="bg-purple text-light">
-    <div class="container-fluid">
-        <div class="row mt-2">
+<body class="text-light">
+    <div class="container-fluid bg-fade-pw full-height">
+        <div class="row p-3">
             <img src="logo.png" sizes="100x100" class="img-fluid" style="max-width: 80px; max-height: 80;">
             <div class="col col-1"><h1 class="text-light">QuizApp</h1></div>
             <div class="col col-6"></div>
