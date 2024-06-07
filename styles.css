@@ -59,6 +59,9 @@ html, body {
     color: rgb(102, 3, 202);
 }
 
+.border-purple {
+    border: 1px solid rgb(102, 3, 202) !important;
+}
 
 .btn-lime {
     background-color: rgb(3, 202, 3);
@@ -89,3 +92,12 @@ input[type="checkbox"] {
 input[type="file"] {
     display: none;
 }
+
+.bg-darkblue {
+    background-color: #141d2b;
+}
+
+.bg-blue{
+    background-color : #1a2332;
+}
+

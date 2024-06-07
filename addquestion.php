@@ -9,13 +9,19 @@ function processimage(){
 $quizid=$_SESSION["quiz"]["id"];
 if(isset($_POST["add"])){
     $question = $_POST['question'];
+    $qformat = $_POST['qformat'];
 
     $imageData=null;
+
+    if($qformat=="formula"){
+        $question = preg_replace_callback('/\d+/', function($matches) {
+            $number = $matches[0];
+            return "<sub>$number</sub>";
+        }, $question);
+    }
     
     if (isset($_FILES['question-image']) && $_FILES['question-image']['error'] == 0) {
         $image = $_FILES['question-image'];
-        //$imageName = $image['name'];
-        //$imageType = $image['type'];
         $imageData = file_get_contents($image['tmp_name']);
         
     }
@@ -38,6 +44,8 @@ if(isset($_POST["add"])){
     foreach ($answers_text as $index => $answer_text) {
         $isCorrect = $correct[$index] === 'true' ? 1 : 0;
         $imageData=null;
+        
+        
 
         switch($format[$index]) {
             case 'formula':
@@ -76,7 +84,6 @@ if(isset($_POST["add"])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <?php include 'dependencies.php' ?>
 </head>
 
@@ -86,10 +93,20 @@ if(isset($_POST["add"])){
         <form action="" method="post" enctype="multipart/form-data">
             <div class="row mt-4">
                 <div class="col col-12 col-md-6">
+                    
                     <label for="question">
                         <h4>Insert question:</h4>
-                    </label><br>
-                    <input type="text" class="form-control " name="question" id="question" required autocomplete="off"> <br>
+                    </label>
+                    <div class="input-group answer-field">
+                        <div class="input-group-append">
+                            <select class="form-control btn-lg btn-primary shadow-none" name="qformat" required>
+                                <option value="text">Text</option>
+                                <option value="formula">Formula</option>
+                            </select>
+                        </div>
+                        <input type="text" class="form-control " name="question" id="question" required autocomplete="off">
+                    </div>
+                    
                 </div>
                 <div class="col col-12 col-md-6 image-container">
                     <h4>Insert image (optional)</h4>
@@ -99,9 +116,11 @@ if(isset($_POST["add"])){
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col">
+                    <h4>Insert Answers:</h4>
                     <div id="answers-container">
+                        
                         <div class="input-group answer-field mt-4">
                             <div class="input-group-append">
                                 <select class="form-control btn-lg btn-primary shadow-none" name="format[]" id="format0" required>

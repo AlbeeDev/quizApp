@@ -55,7 +55,7 @@
     <title>Document</title>
     <?php include 'dependencies.php' ?>
 </head>
-<body class="bg-dark text-light">
+<body class="bg-darkblue text-light">
     <?php include 'nav.php' ?>
     <div class="container">
         <div class="row mt-3">

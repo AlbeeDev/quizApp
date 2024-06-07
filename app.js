@@ -86,6 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log(answerCount)
             original.querySelector('#correct0').value = 'true';
+            original.querySelector('#correct0').classList.remove('btn-danger')
+            original.querySelector('#correct0').classList.add('btn-success')
             original.querySelector('#correct0').id='correct'+answerCount;
             container.appendChild(original);
 
