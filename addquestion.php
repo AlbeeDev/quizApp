@@ -2,10 +2,6 @@
 session_start();
 include "db_connect.php";
 
-function processimage(){
-
-}
-
 $quizid=$_SESSION["quiz"]["id"];
 if(isset($_POST["add"])){
     $question = $_POST['question'];
@@ -79,15 +75,16 @@ if(isset($_POST["add"])){
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  class="<?php if(isset($_SESSION["theme"])) echo $_SESSION["theme"] ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'dependencies.php' ?>
+    <script src="app.js"></script>
 </head>
 
-<body class="bg-dark text-light">
+<body class="background-bg textc1">
     <?php include 'nav.php' ?>
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
@@ -99,7 +96,7 @@ if(isset($_POST["add"])){
                     </label>
                     <div class="input-group answer-field">
                         <div class="input-group-append">
-                            <select class="form-control btn-lg btn-primary shadow-none" name="qformat" required>
+                            <select class=" primary-btn-lg shadow-none" name="qformat" required>
                                 <option value="text">Text</option>
                                 <option value="formula">Formula</option>
                             </select>
@@ -110,7 +107,7 @@ if(isset($_POST["add"])){
                 </div>
                 <div class="col col-12 col-md-6 image-container">
                     <h4>Insert image (optional)</h4>
-                    <label class="btn btn-purple text-light mt-1" for="question-image">Select</label>
+                    <label class="primary-btn mt-1" for="question-image">Select</label>
                     <input type="file" name="question-image" id="question-image" accept=".jpg, .jpeg, .png">
                     <img id="question-preview" class="img-fluid rounded-top" style="max-width: 250px;">
                 </div>
@@ -123,7 +120,7 @@ if(isset($_POST["add"])){
                         
                         <div class="input-group answer-field mt-4">
                             <div class="input-group-append">
-                                <select class="form-control btn-lg btn-primary shadow-none" name="format[]" id="format0" required>
+                                <select class="primary-btn-lg shadow-none" name="format[]" id="format0" required>
                                     <option value="text">Text</option>
                                     <option value="formula">Formula</option>
                                     <option value="image">Image</option>
@@ -131,7 +128,7 @@ if(isset($_POST["add"])){
                             </div>
                             <input type="text" class="form-control col-12" name="answers_text[]" id="answer0" placeholder="Enter answer" autocomplete="off">
                             <div class="col col-6 col-md-6" id="image-container0" style="display: none;">
-                                <label class="btn btn-lg btn-light text-dark col-12" for="image-input0">Select Image</label>
+                                <label class="accent-btn-lg col-12" for="image-input0">Select Image</label>
                                 <input type="file" name="answers_image[]" id="image-input0" accept=".jpg, .jpeg, .png">
                                 <img id="image-preview0" class="img-fluid rounded-top m-auto col-12" style="max-width: 250px;">
                             </div>
@@ -149,11 +146,10 @@ if(isset($_POST["add"])){
                         <button type="button" class="btn btn-danger" id="remove-answer">Remove Answer</button>
                     </div>
 
-                    <button type="submit" class="btn btn-purple text-light mt-5" name="add">Confirm</button>
+                    <button type="submit" class="primary-btn mt-5" name="add">Confirm</button>
                 </div>
             </div>
         </form>
     </div>
 </body>
-
 </html>

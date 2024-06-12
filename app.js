@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+
     document.getElementById('question-image').addEventListener('change', function() {
         const file = this.files[0];
         if (file) {

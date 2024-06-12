@@ -1,13 +1,19 @@
 <?php
     session_start();
-    if (isset($_POST["login"])) {
-        include "db_connect.php";
-		if ($conn->connect_error) {
-		  die("Connection failed: " . $conn->connect_error);
-		}	
+    include "db_connect.php";
 
-        $email = $_POST["email"];
-        $password = $_POST["pwd"];
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    if (isset($_POST["login"])) {
+        
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed");
+        }
+
+        $email = htmlspecialchars(trim($_POST["email"]));
+        $password = htmlspecialchars(trim($_POST["pwd"]));
 
         $sql = "SELECT id, username, password FROM user WHERE email = ?";
         if ($stmt = $conn->prepare($sql)) {
@@ -24,6 +30,9 @@
                     $_SESSION["username"]=$username;
                     $_SESSION["userid"]=$userid;
 
+                    if(isset($_COOKIE["theme"]))
+                        $_SESSION["theme"]=$_COOKIE["theme"];
+
                     header("Location: home.php");
                     exit();
 
@@ -38,23 +47,24 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="<?php if(isset($_COOKIE["theme"])) echo $_COOKIE["theme"] ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'dependencies.php' ?>
 </head>
-<body class="text-light">
-    <div class="container-fluid bg-fade-pw full-height">
+<body class="textc1">
+    <div class="container-fluid bg-fade-primary full-height">
         <div class="row p-3">
             <img src="logo.png" sizes="100x100" class="img-fluid" style="max-width: 80px; max-height: 80;">
-            <div class="col col-1"><h1 class="text-light">QuizApp</h1></div>
+            <div class="col col-1"><h1>QuizApp</h1></div>
             <div class="col col-6"></div>
         </div>
         <div class="row justify-content-center">
             <div class="col col-9 col-xl-3 col-lg-5 col-sm-5">
                 <h2 class="mt-5">Login</h2>
                 <form action="" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email" required>

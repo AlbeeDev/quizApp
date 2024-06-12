@@ -48,14 +48,14 @@
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  class="<?php if(isset($_SESSION["theme"])) echo $_SESSION["theme"] ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <?php include 'dependencies.php' ?>
 </head>
-<body class="bg-darkblue text-light">
+<body class="background-bg textc1">
     <?php include 'nav.php' ?>
     <div class="container">
         <div class="row mt-3">
@@ -128,7 +128,7 @@
                             }
                             
                             ?>
-                            <div class="btn btn-gray text-light mt-4 p-2">
+                            <div class="secondary-btn-lg border mt-4 p-2">
                                 <input type="checkbox" class="me-2" name="answers[]" id="<?php echo $_SESSION['quiz']['answer_ids'][$index] ?>" value="<?php echo $_SESSION['quiz']['answer_ids'][$index] ?>" >
                                 <label for="<?php echo $_SESSION['quiz']['answer_ids'][$index] ?>">
                                 <?php
@@ -152,8 +152,8 @@
                         }
                     }   
                     ?>
-                    <button class="btn btn-purple text-light mt-5" type="submit" name="confirm">Confirm</button>
-                    <button class="btn btn-light mt-5 ms-3" type="submit" name="skip">Skip question</button>
+                    <button class="primary-btn textc1 mt-5" type="submit" name="confirm">Confirm</button>
+                    <button class="accent-btn  mt-5 ms-3" type="submit" name="skip">Skip question</button>
                 </form>
                 <?php }
                 else { ?>
@@ -247,7 +247,7 @@
                     
 
                     ?>
-                    <button class="btn btn-purple text-light mt-5" type="submit" name="continue">Next</button>
+                    <button class="primary-btn textc1 mt-5" type="submit" name="continue">Next</button>
                 </form>
                 <?php } ?>
             </div>

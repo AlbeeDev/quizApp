@@ -4,6 +4,8 @@ include "db_connect.php";
 
 $quizid=$_SESSION["quiz"]["id"];
 
+
+
 if(isset($_POST["add"])){
 
     header("Location: addquestion.php");
@@ -11,7 +13,7 @@ if(isset($_POST["add"])){
 }
 
 if(isset($_POST["remove"])){
-    $qid = $_POST["qid"];
+    $qid = $_POST["id"];
 
     $sql="select a.id from answer a
     join question q on q.id = a.fk_question
@@ -43,20 +45,53 @@ if(isset($_POST["remove"])){
 
     
 }
+
+if(isset($_POST["display"])){
+    $_SESSION["quiz"]["lastqid"]=$_POST["qid"];
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  class="<?php if(isset($_SESSION["theme"])) echo $_SESSION["theme"] ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'dependencies.php' ?>
 </head>
-<body class="text-light bg-darkblue">
+<body class="textc1 background-bg">
 <?php include 'nav.php' ?>
     <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="modal fade" id="deletemodal" >
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-dark">
+                                <h5 class="modal-title">Delete Question</h5>
+                                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body bg-dark">
+                                <form action="" method="post">
+                                    <input type="hidden" name="id" value="">
+                                    <div class="row">
+                                        <h5>This action will delete the question and all of its answers immediately</h5>
+                                        <h5>Are you sure?</h5>
+                                    </div>
+                                    <div class="row d-flex justify-content-end">
+                                        <div class="col col-auto">
+                                            <div class="btn btn-light bg-light" data-bs-dismiss="modal" aria-label="Close">Cancel</div>
+                                            <button class="btn btn-danger text-light w-30" type="submit" name="remove">Delete</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row mt-4">
             <form action="" method="post">
-                <button class="btn btn-purple text-light" type="submit" name="add">Add question</button>
+                <button class="primary-btn" type="submit" name="add">Add question</button>
             </form>
         </div>
         <div class="row mt-4">
@@ -76,7 +111,14 @@ if(isset($_POST["remove"])){
                     ?>
                     <form class="col col-auto" action="" method="post">
                         <input type="hidden" name="qid" value="<?php echo $qid; ?>">
-                        <button class="btn btn-lg btn-primary text-light me-2" type="submit" name="display"><?php echo $index; ?></button>
+                        <button class="primary-btn-lg me-2 qbtn <?php 
+                        if (isset($_SESSION["quiz"]["lastqid"]) && $_SESSION["quiz"]["lastqid"]==$qid){
+                            echo "accent-btn-lg";
+                        }
+                        else{
+                            echo "primary-btn-lg";
+                        }
+                        ?>" type="submit" name="display"><?php echo $index; ?></button>
                     </form>
                     <?php
                     $index++;
@@ -88,13 +130,12 @@ if(isset($_POST["remove"])){
         </div>
         <?php
         if(isset($_POST["display"])){
-            $qid=$_POST["qid"];
+        $qid=$_POST["qid"];
         ?>
         <div class="row mt-4">
-            <form action="" method="post">
-                <input type="hidden" name="qid" value="<?php echo $qid; ?>">
-                <button class="btn btn-danger" type="submit" name="remove">Remove question</button>
-            </form>
+            <div class="col col-auto">
+                <div class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletemodal" data-id="<?php echo $qid ?>">Remove question</div>
+            </div>
         </div>
         <div class="row mt-5">
             <?php 
@@ -128,13 +169,13 @@ if(isset($_POST["remove"])){
 
             <?php
             $alphabet=range('A', 'Z');
-            $sql="select id, text, image from answer
+            $sql="select id, text, image, is_correct from answer
             where fk_question = ?";
             if($stmt->prepare($sql)){
                 $stmt->bind_param("i",$qid);
                 $stmt->execute();
                 $stmt->store_result();
-                $stmt->bind_result($aid,$atext,$aimage);
+                $stmt->bind_result($aid,$atext,$aimage,$acorrect);
                 $index = 0;
                 while($stmt->fetch()){
                     $_SESSION['quiz']['answer_ids'][$index] = $aid;
@@ -152,7 +193,7 @@ if(isset($_POST["remove"])){
                     }
                     
                     ?>
-                    <div class="text-light mt-4 p-2">
+                    <div class="<?php if($acorrect==1){ echo 'text-lime'; } ?>  mt-4 p-2">
                         
                         <?php
                         if($_SESSION['quiz']['answers'][$index]['type']==='image'){
@@ -180,5 +221,16 @@ if(isset($_POST["remove"])){
         }
         ?>
     </div>
+    <script>
+     var myModal = document.getElementById('deletemodal');
+    myModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var data = button.getAttribute('data-id'); 
+        var modalBodyInput = myModal.querySelector('input[name="id"]');
+        console.log(data);
+        modalBodyInput.value = data;
+    });
+
+</script>
 </body>
 </html>

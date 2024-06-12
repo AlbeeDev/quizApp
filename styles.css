@@ -1,7 +1,71 @@
+:root {
+    --primary-color: rgb(102, 3, 202);
+    --secondary-color: rgb(35, 50, 73);
+    --background-color: rgb(20, 29, 43);
+    --accent-color: #ffffff;
+    --text-color1: #ffffff;
+    --text-color2: #000000;
+}
+
+.purple-theme {
+    --primary-color: rgb(102, 3, 202);
+    --secondary-color: rgb(35, 50, 73);
+    --background-color: rgb(20, 29, 43);
+    --accent-color: #ffffff;
+    --text-color1: #ffffff;
+    --text-color2: #000000;
+}
+
+.orange-theme {
+    --primary-color: rgb(255, 165, 0);
+    --secondary-color: rgb(255, 200, 100);
+    --background-color: rgb(128, 77, 0);
+    --accent-color: #000000;
+    --text-color1: #000000;
+    --text-color2: #ffffff;
+}
+
+.blue-theme {
+    --primary-color: rgb(3, 102, 202);
+    --secondary-color: rgb(73, 123, 175);
+    --background-color: rgb(121, 170, 219);
+    --accent-color: #000000;
+    --text-color1: #ffffff;
+    --text-color2: #ffffff;
+}
+
+.red-theme {
+    --primary-color: rgb(202, 3, 3);
+    --secondary-color: rgb(73, 35, 35);
+    --background-color: rgb(43, 20, 20);
+    --accent-color: #ffffff;
+    --text-color1: #ffffff;
+    --text-color2: #000000;
+}
+
+.dark-green-theme {
+    --primary-color: rgb(0, 100, 0);  /* Dark green color */
+    --secondary-color: rgb(34, 139, 34);  /* Forest green color */
+    --background-color: rgb(10, 50, 10);  /* Dark background with green tint */
+    --accent-color: #ffffff;
+    --text-color1: #ffffff;
+    --text-color2: #000000;
+}
+
+.dark-theme {
+    --primary-color: #000000; /* Black */
+    --secondary-color: #333333; /* Dark grey */
+    --background-color: #1a1a1a; /* Slightly lighter black for background */
+    --accent-color: #ffffff; /* White for accents */
+    --text-color1: #ffffff; /* White for primary text */
+    --text-color2: #000000; /* Light grey for secondary text */
+}
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    color: var(--text-color);
 }
 
 .full-height {
@@ -14,53 +78,179 @@ html, body {
     border-radius: 25px;
     overflow: hidden;
     height: 30px;
-  }
-  #progress-bar {
+}
+#progress-bar {
     height: 100%;
     width: 0;
-    background-color: #02d5d8;
+    background-color: var(--primary-color);
     text-align: center;
     line-height: 30px;
     color: white;
     white-space: nowrap; 
     transition: width 0.5s;
-  }
+}
 
-.bg-approved{
+option:hover{
+    background-color: lime !important;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: var(--text-color1);
+}
+
+a:hover {
+    color: var(--text-color1);
+}
+
+.bg-approved {
     background-color: lime !important; 
-    border-bottom-color:lime !important;
-    border-left-color:lime !important;
-    border-right-color:lime !important;
-    border-top-color:lime !important;
+    border-color: lime !important;
 }
 
-.btn-purple {
-    background-color: rgb(102, 3, 202);
-    border-color: rgb(102, 3, 202);
+.btn-outline-light {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
 }
 
-.bg-purple {
-    background-color: rgb(102, 3, 202);
+.primary-btn {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-color1);
+
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
 }
 
-.bg-fade-pw {
-    background: linear-gradient(to bottom, rgb(102, 3, 202) 50%, white);
+.primary-btn-lg{
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-color1);
+
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: .3rem;
 }
 
-.bg-fade-pb {
-    background: linear-gradient(to bottom, rgb(102, 3, 202) 5%, black 15%);
+.secondary-btn {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-color1);
+
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
 }
 
-.bg-carbon {
-    background-color: rgb(48, 48, 48);
+.secondary-btn-lg {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-color1);
+
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: .3rem;
 }
 
-.text-purple {
-    color: rgb(102, 3, 202);
+
+.primary-border {
+    border: 1px solid var(--primary-color) !important;
 }
 
-.border-purple {
-    border: 1px solid rgb(102, 3, 202) !important;
+.primary-bg {
+    background-color: var(--primary-color);
+}
+
+.background-bg {
+    background-color: var(--background-color);
+}
+
+.secondary-bg {
+    background-color: var(--secondary-color);
+}
+
+.accent-btn{
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-color2);
+
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+}
+
+.accent-btn-lg{
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-color2);
+
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+}
+
+.accent-bg{
+    background-color: var(--accent-color);
+}
+
+.textc1 {
+    color: var(--text-color1);
+}
+
+.textc2 {
+    color: var(--text-color2);
+}
+
+.bg-fade-primary{
+    background: linear-gradient(to bottom, var(--primary-color) 50%, var(--accent-color));
 }
 
 .btn-lime {
@@ -77,27 +267,46 @@ html, body {
 }
 
 .border-lime {
-    border-color: rgb(3, 202, 3) ;
+    border-color: rgb(3, 202, 3);
 }
 
 input[type="checkbox"] {
     transform: scale(1.5); /* Adjust the scale factor as needed */
 }
 
-.btn-gray {
-    background-color: rgb(63, 63, 63);
-    border-color: rgb(63, 63, 63);
-}
-
 input[type="file"] {
     display: none;
 }
 
-.bg-darkblue {
-    background-color: #141d2b;
+.theme-switcher {
+    position: relative;
+    display: inline-block;
 }
 
-.bg-blue{
-    background-color : #1a2332;
+.theme-switcher-content {
+    display: none;
+    position: absolute;
+    background-color: var(--background-color);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 }
 
+.theme-switcher-content a {
+    color: var(--text-color1);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.theme-switcher-content a:hover {
+    background-color: var(--secondary-color);
+}
+
+.theme-switcher:hover .theme-switcher-content {
+    display: block;
+}
+
+.theme-switcher-icon {
+    cursor: pointer;
+}

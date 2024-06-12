@@ -1,14 +1,16 @@
 <?php
     session_start();
-    if (isset($_POST["register"])) {
-        include "db_connect.php";
-		if ($conn->connect_error) {
-		  die("Connection failed: " . $conn->connect_error);
-		}	
+    include "db_connect.php";
 
-        $username = $_POST['username'];
-        $email = $_POST["email"];
-        $password = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
+    if (isset($_POST["register"])) {
+        
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed");
+        }
+
+        $username = htmlspecialchars(trim($_POST['username']));
+        $email = htmlspecialchars(trim($_POST["email"]));
+        $password = password_hash(htmlspecialchars(trim($_POST["pwd"])), PASSWORD_DEFAULT);
 
         $sql = "select 1 from user where username = ? or email = ?";
         if($stmt = $conn->prepare($sql)) {
@@ -40,23 +42,24 @@
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="<?php if(isset($_COOKIE["theme"])) echo $_COOKIE["theme"] ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'dependencies.php' ?>
 </head>
-<body class="text-light">
-    <div class="container-fluid bg-fade-pw full-height">
+<body class="textc1">
+    <div class="container-fluid bg-fade-primary full-height">
         <div class="row p-3">
             <img src="logo.png" sizes="100x100" class="img-fluid" style="max-width: 80px; max-height: 80;">
-            <div class="col col-1"><h1 class="text-light">QuizApp</h1></div>
+            <div class="col col-1"><h1>QuizApp</h1></div>
             <div class="col col-6"></div>
         </div>
         <div class="row justify-content-center">
             <div class="col col-9 col-xl-3 col-lg-5 col-sm-5">
                 <h2 class="mt-5">Register</h2>
                 <form action="" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                     <div class="form-group">
                         <label for="username">Username:</label>
                         <input type="text" class="form-control" id="username" placeholder="Choose a username" name="username" required>
@@ -85,7 +88,7 @@
         <div class="row justify-content-center">
             <div class="col col-9 col-xl-3 col-lg-5 col-sm-5">
                 <h2 class="mt-5">Already have an account?</h2>
-                <a href="login.php" class="btn btn-outline-light text-decoration-none">Login here</a>
+                <a href="login.php" class="btn btn-outline-light">Login here</a>
             </div>
         </div>
     </div>
