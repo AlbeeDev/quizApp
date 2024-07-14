@@ -49,6 +49,8 @@ if(isset($_POST["remove"])){
 if(isset($_POST["display"])){
     $_SESSION["quiz"]["lastqid"]=$_POST["qid"];
 }
+
+include "themers.php";
 ?>
 <!DOCTYPE html>
 <html lang="en"  class="<?php if(isset($_SESSION["theme"])) echo $_SESSION["theme"] ?>">

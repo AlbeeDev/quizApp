@@ -22,7 +22,6 @@ if(isset($_POST["add"])){
         
     }
 
-    //insert question and image
     $sql="insert into question(text, image, fk_quiz) 
     values (?, ?, ?)";
     if($stmt=$conn->prepare($sql)){
@@ -45,7 +44,7 @@ if(isset($_POST["add"])){
 
         switch($format[$index]) {
             case 'formula':
-                $answer_text = preg_replace_callback('/\d+/', function($matches) {
+                $answer_text = preg_replace_callback('/([\S]\d)|(\d[\S])/', function($matches) {
                     $number = $matches[0];
                     return "<sub>$number</sub>";
                 }, $answer_text);
@@ -70,6 +69,7 @@ if(isset($_POST["add"])){
         $stmt->close();
     }
 
+    include "themers.php";
     
 }
 

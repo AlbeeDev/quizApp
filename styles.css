@@ -271,7 +271,7 @@ a:hover {
 }
 
 input[type="checkbox"] {
-    transform: scale(1.5); /* Adjust the scale factor as needed */
+    transform: scale(1.5); 
 }
 
 input[type="file"] {

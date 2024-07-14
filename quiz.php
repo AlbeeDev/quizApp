@@ -2,6 +2,9 @@
     session_start();
     include "db_connect.php";
 
+    $userid=$_SESSION["userid"];
+    $quizid = $_SESSION["quiz"]["id"];
+
     if(isset($_POST["continue"])){
         unset($_SESSION['quiz']['answer_ids']);
         unset($_SESSION['quiz']['answer']);
@@ -9,7 +12,60 @@
             $_SESSION["quiz"]["index"]++;
         }
         else{
-            header("Location: home.php");
+
+            $startTime = $_SESSION['quiz']['start_time'];
+            $currentTime = time();
+            $quiztime = $currentTime - $startTime;
+
+            $sql="update quizstats
+            set completed = (select completed from quizstats where fk_quiz = ? and fk_user=?) + 1
+            where fk_quiz = ? and fk_user= ?";
+            if ($stmt = $conn->prepare($sql)) {
+                $stmt->bind_param("iiii",$quizid,$userid,$quizid,$userid);
+                $stmt->execute();
+            }
+
+            $sql="select completed, avg_time, best_time from quizstats 
+            where fk_quiz = ? and fk_user= ?";
+            if ($stmt = $conn->prepare($sql)) {
+                $stmt->bind_param("ii",$quizid, $userid);
+                $stmt->execute();
+                $stmt->store_result();
+                $stmt->bind_result($completed,$avg_time, $best_time); 
+                $stmt->fetch();
+            }
+            $new_avgtime = 0;
+            if($avg_time==0){
+                $new_avgtime = $quiztime;
+            }
+            else{
+                $new_avgtime = ($avg_time + $quiztime) / 2;
+            }
+
+            
+            
+            $sql="update quizstats
+            set avg_time = ?
+            where fk_quiz = ? and fk_user= ?";
+            if ($stmt = $conn->prepare($sql)) {
+                $stmt->bind_param("iii",$new_avgtime,$quizid,$userid);
+                $stmt->execute();
+            }
+
+            if ($best_time == 0 || $quiztime < $best_time) {
+                $sql = "update quizstats
+                set best_time = ?
+                where fk_quiz = ? and fk_user= ?";
+                if ($stmt = $conn->prepare($sql)) {
+                    $stmt->bind_param("iii", $quiztime, $quizid, $userid);
+                    $stmt->execute();
+                }
+            }
+
+            
+
+            $_SESSION['quiz']['time'] = $quiztime;
+            header("Location: quizstats.php");
             exit();
         }
     }
@@ -24,7 +80,7 @@
         $selected_answers = isset($_POST['answers']) ? $_POST['answers'] : [];
     }
     
-    $quizid = $_SESSION["quiz"]["id"];
+    
     $sql="select name, username from quiz
     join user u on u.id = quiz.fk_user
     where quiz.id = ?";
@@ -36,16 +92,17 @@
         $stmt->fetch();
     }
 
-    //echo "DEBUG: questions ";
-
+    /*
+    echo "DEBUG: questions ";
     foreach ($_SESSION["quiz"]["questions"] as $questionId) {
-        //echo $questionId;
+        echo $questionId;
     }
+    */
     $cur_question = $_SESSION["quiz"]["questions"][$_SESSION["quiz"]["index"]];
     //echo " current question: ".$cur_question;
 
-    
 
+    include "themers.php";
 ?>
 <!DOCTYPE html>
 <html lang="en"  class="<?php if(isset($_SESSION["theme"])) echo $_SESSION["theme"] ?>">
@@ -189,6 +246,7 @@
                     <?php
                     $alphabet=range('A', 'Z');
                     $awrongflag=false;
+                    $acorrectflag=false;
                     for ($index=0; $index < count($_SESSION['quiz']['answer_ids']); $index++) {
                         $aid=$_SESSION['quiz']['answer_ids'][$index];
                         $sql="select is_correct from answer
@@ -204,6 +262,17 @@
                         <div class="btn btn-<?php 
                             if($acorrect==1 && in_array($aid, $selected_answers)){ 
                                 echo "lime"; 
+
+                                if($acorrectflag==false){
+                                    $acorrectflag=true;
+                                    $sql="update quizstats
+                                    set a_right = (select a_right from quizstats where fk_quiz = ? and fk_user=?) + 1
+                                    where fk_quiz = ? and fk_user= ?";
+                                    if ($stmt2 = $conn->prepare($sql)) {
+                                        $stmt2->bind_param("iiii",$quizid,$userid,$quizid,$userid);
+                                        $stmt2->execute();
+                                    }
+                                }
                             }
                             else if(($firstcon=($acorrect==1 && !in_array($aid, $selected_answers))) || ($secondcon=($acorrect==0 && in_array($aid, $selected_answers)))){
                                 if($firstcon==true){
@@ -215,7 +284,16 @@
                                 
                                 if($awrongflag==false){
                                     $_SESSION["quiz"]["questions"][]=$qid;
+                                    $_SESSION["quiz"]["mistakes"]+=1;
                                     $awrongflag=true;
+
+                                    $sql="update quizstats
+                                    set a_wrong = (select a_wrong from quizstats where fk_quiz = ? and fk_user=?) + 1
+                                    where fk_quiz = ? and fk_user= ?";
+                                    if ($stmt2 = $conn->prepare($sql)) {
+                                        $stmt2->bind_param("iiii",$quizid,$userid,$quizid,$userid);
+                                        $stmt2->execute();
+                                    }
                                 }
                                 
                                 
@@ -243,6 +321,7 @@
 
                     }
                     $awrongflag=true;
+                    $acorrectflag=true;
 
                     
 
@@ -255,7 +334,6 @@
         
     </div>
     <script>
-    // JavaScript to handle the progress bar
     function updateProgressBar(currentIndex, totalQuestions) {
         if(currentIndex==0) return;
       const progressBar = document.getElementById('progress-bar');
@@ -264,11 +342,9 @@
       progressBar.textContent = Math.round(progress) + '%';
     }
 
-    // Assume these values come from your session data
     const currentIndex = <?php echo $_SESSION["quiz"]["index"]; ?>;
     const totalQuestions = <?php echo count($_SESSION["quiz"]["questions"]); ?>;
 
-    // Initial update of the progress bar
     updateProgressBar(currentIndex, totalQuestions);
   </script>
 </body>
