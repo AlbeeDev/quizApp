@@ -1,2 +1,2 @@
-## Link
-https://albeedev.ddns.net
+school project
+discontinued as of now
