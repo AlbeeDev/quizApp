@@ -246,7 +246,8 @@
                     <?php
                     $alphabet=range('A', 'Z');
                     $awrongflag=false;
-                    $acorrectflag=false;
+                    $acorrecttotal=0;
+                    $acorrectcounter=0;
                     for ($index=0; $index < count($_SESSION['quiz']['answer_ids']); $index++) {
                         $aid=$_SESSION['quiz']['answer_ids'][$index];
                         $sql="select is_correct from answer
@@ -257,22 +258,16 @@
                             $stmt->store_result();
                             $stmt->bind_result($acorrect);
                             $stmt->fetch();
+                            $acorrecttotal += $acorrect;
                         } 
                         ?> 
+                        
                         <div class="btn btn-<?php 
                             if($acorrect==1 && in_array($aid, $selected_answers)){ 
-                                echo "lime"; 
+                                echo "lime";
+                                $acorrectcounter++; 
 
-                                if($acorrectflag==false){
-                                    $acorrectflag=true;
-                                    $sql="update quizstats
-                                    set a_right = (select a_right from quizstats where fk_quiz = ? and fk_user=?) + 1
-                                    where fk_quiz = ? and fk_user= ?";
-                                    if ($stmt2 = $conn->prepare($sql)) {
-                                        $stmt2->bind_param("iiii",$quizid,$userid,$quizid,$userid);
-                                        $stmt2->execute();
-                                    }
-                                }
+                                
                             }
                             else if(($firstcon=($acorrect==1 && !in_array($aid, $selected_answers))) || ($secondcon=($acorrect==0 && in_array($aid, $selected_answers)))){
                                 if($firstcon==true){
@@ -321,8 +316,16 @@
 
                     }
                     $awrongflag=true;
-                    $acorrectflag=true;
 
+                    if($acorrectcounter==$acorrecttotal){
+                        $sql="update quizstats
+                        set a_right = (select a_right from quizstats where fk_quiz = ? and fk_user=?) + 1
+                        where fk_quiz = ? and fk_user= ?";
+                        if ($stmt = $conn->prepare($sql)) {
+                            $stmt->bind_param("iiii",$quizid,$userid,$quizid,$userid);
+                            $stmt->execute();
+                        }
+                    }
                     
 
                     ?>

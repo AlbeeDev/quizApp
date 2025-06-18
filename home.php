@@ -13,7 +13,6 @@
     unset($_SESSION["quiz"]);
 
     $userid=$_SESSION["userid"];
-
     
 
     if(isset($_POST["start"])){
@@ -251,6 +250,28 @@
             
     }
 
+    if(isset($_POST["favorite"])){
+        $quizid = $_POST["id"];
+
+        $sql = "INSERT INTO favorite (fk_user, fk_quiz) VALUES (?, ?)";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("ii", $userid, $quizid);
+            $stmt->execute();
+        }
+            
+    }
+
+    if(isset($_POST["unfavorite"])){
+        $quizid = $_POST["id"];
+
+        $sql = "DELETE FROM favorite WHERE fk_user = ? AND fk_quiz = ?";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("ii", $userid, $quizid);
+            $stmt->execute();
+        }
+            
+    }
+
     include "themers.php";
 ?>
 <!DOCTYPE html>
@@ -318,27 +339,46 @@
 
             <?php 
             
-            $sql="select q.id, q.name, q.language, u.username, null as collaborator_username
+            $sql="select q.id, q.name, q.language, u.username, null as collaborator_username, IF(f.fk_user IS NULL, 0, 1) AS is_favorite
             from quiz q
             join user u on u.id = q.fk_user
+            LEFT JOIN favorite f ON f.fk_quiz = q.id AND f.fk_user = ?
             where q.fk_user = ?
             union
-            select q.id, q.name, q.language, u.username, u2.username as collaborator_username
+            select q.id, q.name, q.language, u.username, u2.username as collaborator_username, IF(f.fk_user IS NULL, 0, 1) AS is_favorite
             from quiz q
             join user u on u.id = q.fk_user
             join collaborator co on q.id = co.fk_quiz
             join user u2 on u2.id = co.fk_user
-            where co.fk_user = ?";
+            LEFT JOIN favorite f ON f.fk_quiz = q.id AND f.fk_user = ?
+            where co.fk_user = ?
+            order by is_favorite desc, id";
             if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param("ii",$userid, $userid);
+                $stmt->bind_param("iiii",$userid, $userid, $userid, $userid);
                 $stmt->execute();
                 $stmt->store_result();
                 $rows= $stmt->num_rows;
                 if ($rows > 0) {
-                    $stmt->bind_result($id,$name,$language,$creator, $collaborator); 
+                    $stmt->bind_result($id,$name,$language,$creator, $collaborator, $isfavorite); 
                     while($stmt->fetch()){
                         if (strlen($name) > 20) {
-                            $name=substr($name, 0, 20) . "...";
+                            $name=substr($name, 0, 16) . "...";
+                        }
+
+                        
+
+                        $sql="select 1 from favorite
+                        where fk_user = ? and fk_quiz= ?";
+                        if($stmt2=$conn->prepare($sql)){
+                            $stmt2->bind_param("ii",$userid,$id);
+                            $stmt2->execute();
+                            $stmt2->store_result();
+                            if($stmt2->num_rows>0){
+                                $favorite=true;
+                            }
+                            else{
+                                $favorite=false;
+                            }
                         }
                         
                         $sql="select 1 from mergequiz
@@ -369,7 +409,29 @@
                             <form action="" method="post">
                                 <div class="card-body">
                                     <input type="hidden" name="id" value="<?php echo $id ?>">
-                                    <h4><?php echo $name ?></h4>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <h4><?php echo $name ?></h4>
+                                        </div>
+                                        <div class="col-2">
+                                            <?php 
+                                            if($favorite==true){
+                                                ?>
+                                                <button class="btn text-warning border-warning" type="submit" name="unfavorite"><div class="far fa-star"></div></button>
+                                                <?php
+                                            }
+                                            else{
+                                                ?>
+                                                <button class="btn text-light" type="submit" name="favorite"><div class="far fa-star"></div></button>
+                                                <?php
+                                            }
+                                            
+                                            
+                                            ?>
+                                            
+                                        </div>
+                                    </div>
+                                    
                                     <h5>Language: <?php echo $language ?></h5>
                                     <?php
                                     if($_SESSION["username"]==$creator){
